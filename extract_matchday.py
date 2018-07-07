@@ -116,4 +116,4 @@ if __name__ == "__main__":
              'll45/questions/43646106.shtml']
     for entry in tests:
         htmladdr = '%s%s' % (HEAD, entry)
-        print(extract_matchday(htmladdr));
+        print(extract_matchday(htmladdr))

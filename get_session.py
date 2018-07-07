@@ -5,6 +5,8 @@ Login to LL site:
          [DEFAULT]
          username: <Your user name>
          password: <Your password>
+         active_season: current (or next) LL season number
+         verbose: yes or no:
 """
 import requests
 import configparser
@@ -15,6 +17,7 @@ USER_INFO = "userinfo.ini"
 def get_session():
     """
     Read the user supplied ini file and get a requests session
+    also pass back active season number read from ini file.
     """
     payload = {}
     config = configparser.ConfigParser()
@@ -24,4 +27,5 @@ def get_session():
     payload['login'] = 'Login'
     s=requests.Session()
     s.post('%sucp.php?mode=login' % HEAD, data=payload)
-    return s
+    verbosity = config.getboolean('DEFAULT', 'verbose')
+    return (s, config['DEFAULT']['active_season'], verbosity)

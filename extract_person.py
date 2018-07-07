@@ -3,6 +3,9 @@
 Extract all answers from a player
 """
 from html.parser import HTMLParser
+from collections import OrderedDict
+import yaml
+import os
 
 from extract_matchday import extract_matchday
 from get_session import get_session
@@ -50,6 +53,14 @@ class PersonParse(HTMLParser):
                             if qparts[3][0].isdigit():
                                 self.result[self.season*100 + self.mday] = apt[1]
                             
+def eprint(estring):
+    """
+    Embellish an error message
+    """
+    print('************** ERROR **************')
+    print(estring)
+    print('***********************************')
+
 def extract_person(name, ses):
     """
     Input:
@@ -63,19 +74,78 @@ def extract_person(name, ses):
     ndata = ses.get(urlp)
     parser = PersonParse()
     if ndata.text.startswith('Must be logged in'):
-        print('userinfo.ini file may be incorrect')
+        eprint('userinfo.ini file may be incorrect')
     parser.feed(ndata.text)
     return parser.result
 
-if __name__ == "__main__":
-    #
-    # View the match info filenames one by one.
-    #
-    s = get_session()
-    odata = extract_person('muellerp', s)
-    s.close()
+def check_answers(answers):
+    """
+    Display answers
+    """
+    print(answers)
+    if len(answers) != 150:
+        eprint('The number of answers appears to be incorrect')
+
+def get_data_for_person(name):
+    """
+    Input:
+         Name-- Learned league name
+
+    Output:
+        Dictionary of 150 character strings of answers, indexed by season number.
+    """
+    sdata = get_session()
+    session = sdata[0]
+    active_season = sdata[1]
+    verbose = sdata[2]
+    odata = extract_person(name, session)
+    session.close()
+    user_info = {}
+    prev_no = 25
+    prev_season = 0
+    season = 0
     count = 0
-    for i in odata:
+    odata1 = OrderedDict(sorted(odata.items()))
+    for parts in odata1:
+        indx = parts
+        value = odata1[parts]
+        mday = indx % 100
+        if mday == 1:
+            prev_season = season
+            if season != 0:
+                check_answers(user_info[season])
+            season = indx // 100
+            print("Collecting data for Season %s" % season)
+            if prev_no != 25:
+                if prev_season != active_season:
+                    eprint('season error for entry %i' % indx)
+            user_info[season] = ''
+        else:
+            if season != indx // 100:
+                eprint('seasons out of order for entry %i' % indx)
+            if prev_no + 1 != mday:
+                eprint('match day order error for entry %i' % indx)
+        prev_no = mday
         count += 1
-        print(str(count)+": "+str(i)+' '+odata[i])
-        print(extract_matchday('%s%s' % (HEAD, odata[i])))
+        if verbose:
+            print(str(count)+": "+str(indx)+' '+value)
+        user_info[season] += extract_matchday('%s%s' % (HEAD, value))[name]
+    check_answers(user_info[season])
+    return user_info
+
+def get_data_for(name, dirv):
+    """
+    Collect a person's answer data
+
+    Input:
+        name: person
+    """
+    idv = name.lower()
+    data = get_data_for_person(idv)
+    filename = os.path.join(dirv, idv+".yaml")
+    out_info = yaml.dump(data)
+    with open(filename, 'w') as ofile:
+        ofile.write(out_info)
+
+if __name__ == "__main__":
+    get_data_for('shelburnem', 'people')
