@@ -105,6 +105,9 @@ def get_data_for_person(name):
     prev_season = 0
     season = 0
     count = 0
+    #user_info[41] = "______" + "______" + "______" + "YYYYYY" + "______" + "______"
+    #season = 41
+    #prev_no = 6
     odata1 = OrderedDict(sorted(odata.items()))
     for parts in odata1:
         indx = parts
