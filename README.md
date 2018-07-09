@@ -16,10 +16,10 @@ active_season = XX
 verbose = no
 ```
 
-username is the name of a Learned League user.
-password is the password for that Learned League user.
-active_season is the current season number, or next season if between seasons.
-verbose can be yes or no.  I recommend no.
+username is the name of a Learned League user.  
+password is the password for that Learned League user.  
+active_season is the current season number, or next season if between seasons.  
+verbose can be yes or no.  I recommend no.  
 
 ### Running the program
 
@@ -31,9 +31,9 @@ make_html.complete(SEASON, SHORT_NAME, LONG_NAME)
 ```
 
 where:
-SEASON -- integer value of the season number
-SHORT_NAME -- short name of rundle used by Learned League.  Can be extracted as the data after question marks when following web pages.
-LONG_NAME -- header text on the rundle web page that is created.
+SEASON -- integer value of the season number  
+SHORT_NAME -- short name of rundle used by Learned League.  Can be extracted as the data after question marks when following web pages.  
+LONG_NAME -- header text on the rundle web page that is created.  
 
 This runs for a while.  When finished, the html file containing the hun information is in short_name/short_name.html
 
