@@ -30,7 +30,7 @@ import make_html
 make_html.complete(SEASON, SHORT_NAME, LONG_NAME)
 ```
 
-where:
+where:  
 SEASON -- integer value of the season number  
 SHORT_NAME -- short name of rundle used by Learned League.  Can be extracted as the data after question marks when following web pages.  
 LONG_NAME -- header text on the rundle web page that is created.  
