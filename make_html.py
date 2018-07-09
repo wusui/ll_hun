@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from gen_hun_number import get_all_tables
+from get_players import populate
 import display_constants
 
 import os
@@ -35,6 +36,15 @@ def make_html(short_name, long_name):
                 out_file.write('</tr>')
             out_file.write('</table>')
         out_file.write('</body></html>')
+
+def complete(season, short_name, long_name):
+    """
+    Do it all:  populate directory short_name with yaml files, then
+                create short_name.html in directory short_name with
+                the formatted html data.
+    """
+    populate(season, short_name)
+    make_html(short_name, long_name)
 
 if __name__ == "__main__":
     #
