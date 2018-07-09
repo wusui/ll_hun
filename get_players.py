@@ -61,6 +61,6 @@ def populate(season, rundle):
         
 if __name__ == "__main__":
     #
-    # Use O'Brien's Pub as a guine pig
+    # Use O'Brien's Pub as a guinea pig
     #
-    populate(77, "OBriensIrishPub")
+    populate(77, "B_Pacific")

@@ -78,7 +78,7 @@ class Hun_finder():
 
 def get_all_tables(rundle):
     """
-    Given a rundle return a tuple.
+    Given a rundle, return a tuple.
     The first element in the tuple is an alphabetically sorted list of rundle players.
     The second element is a dictionary indexed by players.
         Each element in that dictionary is a list of tuples sorted by hun number.
